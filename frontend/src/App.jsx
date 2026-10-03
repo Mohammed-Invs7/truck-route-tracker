@@ -144,7 +144,7 @@ export default function App() {
           </div>
         )}
         <footer className="mt-12 text-center py-4 text-sm text-gray-500 border-t border-gray-200">
-           Developed by 💻<span className="font-semibold text-gray-700">Eng.Mohammed Ali Al-Amoudi - م. محمد علي العمودي</span> for Spotter AI Assessment
+           Developed by 💻<span className="font-semibold text-gray-700">Eng.Mohammed Ali Al-Amoudi - م. محمد علي العمودي</span>
            <span className="mx-2">|</span> 
             <a 
               href="https://www.linkedin.com/in/mohammed-alamoudi-788004367/"
