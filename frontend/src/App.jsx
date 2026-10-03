@@ -14,7 +14,7 @@ export default function App() {
     setTripRoute({ start: currentLoc, end: dropoffLoc })
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/calculate-trip/', {
+      const response = await fetch('/api/calculate-trip/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -143,7 +143,20 @@ export default function App() {
 
           </div>
         )}
-
+        <footer className="mt-12 text-center py-4 text-sm text-gray-500 border-t border-gray-200">
+           Developed by 💻<span className="font-semibold text-gray-700">Eng.Mohammed Ali Al-Amoudi - م. محمد علي العمودي</span> for Spotter AI Assessment
+           <span className="mx-2">|</span> 
+            <a 
+              href="https://www.linkedin.com/in/mohammed-alamoudi-788004367/"
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-blue-600 hover:underline font-medium"
+            >
+              LinkedIn Profile
+            </a>
+            <span className="mx-2">|</span> 
+            <span>Spotter AI Assessment</span>
+        </footer>
       </div>
     </div>
   )
