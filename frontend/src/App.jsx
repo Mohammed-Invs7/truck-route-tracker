@@ -9,9 +9,9 @@ export default function App() {
   // حفظ اسم مدينتي الانطلاق والوصول لعرضهما في التقرير
   const [tripRoute, setTripRoute] = useState({ start: '', end: '' })
 
-  const handleCalculate = async (startLocation, endLocation) => {
+  const handleCalculate = async (currentLoc, pickupLoc, dropoffLoc, cycleUsed) => {
     setIsLoading(true)
-    setTripRoute({ start: startLocation, end: endLocation }) // تخزين المدن
+    setTripRoute({ start: currentLoc, end: dropoffLoc })
 
     try {
       const response = await fetch('http://127.0.0.1:8000/api/calculate-trip/', {
@@ -20,8 +20,10 @@ export default function App() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          current_location: startLocation,
-          destination: endLocation
+          current_location: currentLoc,
+          pickup_location: pickupLoc,
+          dropoff_location: dropoffLoc,
+          current_cycle_used: cycleUsed
         })
       })
       
@@ -69,15 +71,15 @@ export default function App() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-slate-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-500 font-medium">Total Distance</p>
-                  <p className="text-2xl font-bold text-gray-800">{tripData.total_distance_miles} Miles</p>
+                  <p className="text-2xl font-bold text-gray-800">{tripData.summary?.total_miles} Miles</p>
                 </div>
                 <div className="bg-slate-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-500 font-medium">Driving Time</p>
-                  <p className="text-2xl font-bold text-gray-800">{tripData.total_duration_hours} Hours</p>
+                  <p className="text-2xl font-bold text-gray-800">{tripData.summary?.driving_hours} Hours</p>
                 </div>
                 <div className="bg-slate-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-500 font-medium">Trip Days</p>
-                  <p className="text-2xl font-bold text-gray-800">{tripData.total_days} Days</p>
+                  <p className="text-2xl font-bold text-gray-800">{tripData.summary?.total_days} Days</p>
                 </div>
               </div>
             </div>
