@@ -13,7 +13,7 @@ export default function TripForm({ onCalculate, isLoading }) {
     }
   }
 
-  // دالة تعبئة البيانات التجريبية بضغطة زر لتسهيل الشروع والتسجيل
+  // Prefill the form with sample trip data for quicker testing
   const handleDemoFill = () => {
     setCurrent('Houston, TX')
     setPickup('Dallas, TX')

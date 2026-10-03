@@ -6,7 +6,7 @@ import EldGrid from './components/EldGrid'
 export default function App() {
   const [tripData, setTripData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  // حفظ اسم مدينتي الانطلاق والوصول لعرضهما في التقرير
+  // Store origin and destination city names for the printed report header
   const [tripRoute, setTripRoute] = useState({ start: '', end: '' })
 
   const handleCalculate = async (currentLoc, pickupLoc, dropoffLoc, cycleUsed) => {
@@ -37,7 +37,7 @@ export default function App() {
     }
   }
 
-  // دالة الطباعة الاحترافية المباشرة
+  // Open the browser print dialog for the logbook report
   const handleDownloadPDF = () => {
     window.print()
   }
@@ -51,7 +51,7 @@ export default function App() {
           <p className="text-gray-500">FMCSA Compliant Hours of Service Calculator</p>
         </header>
 
-        {/* إخفاء نموذج الإدخال عند الطباعة */}
+        {/* Hide the trip input form when printing */}
         <div className="print:hidden">
           <TripForm onCalculate={handleCalculate} isLoading={isLoading} />
         </div>
@@ -60,7 +60,7 @@ export default function App() {
         {tripData && (
           <div className="space-y-6">
             
-            {/* إخفاء ملخص الخريطة عند طباعة التقرير الورقي */}
+            {/* Hide the map summary when printing the paper report */}
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 print:hidden">
               <h2 className="text-xl font-bold text-gray-800 mb-4">Trip Summary</h2>
               
@@ -84,7 +84,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* قسم طباعة الـ PDF وشبكات الساعات */}
+            {/* PDF print controls and daily HOS grids */}
             <div>
               <div className="flex justify-between items-center mb-4 print:hidden">
                 <h2 className="text-xl font-bold text-gray-800">HOS Daily Logs</h2>
@@ -96,10 +96,10 @@ export default function App() {
                 </button>
               </div>
 
-              {/* هذا الـ div هو التقرير الورقي المستهدف */}
+              {/* Printable paper report container */}
               <div id="pdf-report-content" className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 print:shadow-none print:border-none print:p-0">
                 
-                {/* ترويسة التقرير */}
+                {/* Report header */}
                 <div className="border-b-4 border-gray-800 pb-4 mb-8">
                   <h1 className="text-3xl font-extrabold text-gray-900 uppercase tracking-wider text-center mb-4">
                     Drivers Daily Log
@@ -120,12 +120,12 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* رسم الشبكات لكل يوم */}
+                {/* Render a log grid for each trip day */}
                 {tripData.daily_logs.map((dayData, index) => (
                   <EldGrid key={index} dayData={dayData} />
                 ))}
 
-                {/* تذييل الورقة (التوقيع والملاحظات) */}
+                {/* Report footer (signature and remarks) */}
                 <div className="mt-12 border-t border-gray-300 pt-4 flex justify-between">
                   <div className="w-1/2">
                     <p className="font-bold mb-2">Remarks / Shipping Documents:</p>

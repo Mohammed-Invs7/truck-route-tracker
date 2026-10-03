@@ -16,25 +16,25 @@ def generate_hos_schedule(total_miles, total_drive_hours, current_cycle_used, cu
     # 2. Pickup (1 hr On Duty)
     raw_timeline.append({"status": "ON_DUTY", "duration": 1.0, "remark": f"Pickup at {pickup_loc}"})
     
-    # تتبع ساعات الدورة (70 ساعة في 8 أيام)
-    cycle_hours_accumulated = current_cycle_used + 1.0  # أضفنا ساعة التحميل للساعات المستخدمة
+    # Track 70-hour / 8-day cycle hours
+    cycle_hours_accumulated = current_cycle_used + 1.0  # Include pickup hour in cycle usage
 
     remaining_drive = total_drive_hours
     driven_since_rest = 0.0
     driven_since_break = 0.0
     driven_since_fuel = 0.0
-    shift_duration = 1.0  # ساعة التحميل المحسوبة في الشفت الحالي
+    shift_duration = 1.0  # Pickup hour already counted toward the current shift
 
     while remaining_drive > 0:
-        # فحص هل تم استنفاد دورة الـ 70 ساعة؟
+        # Restart if the 70-hour cycle is exhausted
         if cycle_hours_accumulated >= 70.0:
             raw_timeline.append({"status": "OFF_DUTY", "duration": 34.0, "remark": "34-Hour Restart (70-Hour Limit Reached)"})
-            cycle_hours_accumulated = 0.0  # تصفير الدورة بعد الـ 34 ساعة
+            cycle_hours_accumulated = 0.0  # Reset cycle after the 34-hour restart
             driven_since_rest = 0.0
             driven_since_break = 0.0
             shift_duration = 0.0
 
-        # حساب الحد الأقصى للقيادة المسموح به قبل أي قيد (استراحة 8 ساعات، قيادة يومية 11، نافذة 14، أو ما تبقى من الـ 70 ساعة في الدورة)
+        # Max drive allowed before the next limit (8h break, 11h driving, 14h window, or remaining cycle hours)
         cycle_remaining_allowance = 70.0 - cycle_hours_accumulated
         
         max_drive_allowed = min(
@@ -60,7 +60,7 @@ def generate_hos_schedule(total_miles, total_drive_hours, current_cycle_used, cu
         driven_since_break += chunk
         driven_since_fuel += chunk
         shift_duration += chunk
-        cycle_hours_accumulated += chunk  # القيادة تحتسب ضمن ساعات العمل في الدورة
+        cycle_hours_accumulated += chunk  # Driving counts toward cycle on-duty hours
 
         # Fuel stop required every 1,000 miles (~18 driving hours)
         if driven_since_fuel >= 18.0 and remaining_drive > 0:
@@ -72,7 +72,7 @@ def generate_hos_schedule(total_miles, total_drive_hours, current_cycle_used, cu
         # Mandatory 30-minute break required after 8 hours of driving
         elif driven_since_break >= 8.0 and remaining_drive > 0:
             raw_timeline.append({"status": "OFF_DUTY", "duration": 0.5, "remark": "30-Minute Mandatory Rest Break"})
-            # استراحة الـ 30 دقيقة لا تحتسب ضمن الـ On-Duty/Driving للدورة
+            # The 30-minute break does not count toward cycle On-Duty/Driving hours
             driven_since_break = 0.0
 
     # 3. Dropoff (1 hr On Duty)

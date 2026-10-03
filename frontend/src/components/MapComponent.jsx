@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 
-// إصلاح مشكلة ظهور أيقونات الخريطة الافتراضية في React
+// Restore default Leaflet marker icons in React
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -14,7 +14,7 @@ export default function MapComponent({ mapData }) {
   if (!mapData || !mapData.geometry) return null
 
   const { waypoints, geometry } = mapData
-  const bounds = L.latLngBounds(geometry) // لتوسيط الخريطة تلقائياً على المسار
+  const bounds = L.latLngBounds(geometry) // Fit the map to the route geometry
 
   return (
     <div className="h-[400px] w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm z-0">
@@ -23,16 +23,16 @@ export default function MapComponent({ mapData }) {
         scrollWheelZoom={false} 
         style={{ height: "100%", width: "100%" }}
       >
-        {/* تصميم الخريطة من OpenStreetMap */}
+        {/* OpenStreetMap tile layer */}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
-        {/* رسم خط المسار */}
+        {/* Route polyline */}
         <Polyline positions={geometry} color="blue" weight={4} opacity={0.7} />
 
-        {/* تحديد النقاط (الموقع الحالي، نقطة التحميل، التنزيل) */}
+        {/* Waypoint markers (current location, pickup, dropoff) */}
         {waypoints.current && (
           <Marker position={waypoints.current}>
             <Popup>Current Location</Popup>
