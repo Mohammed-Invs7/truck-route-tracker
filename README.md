@@ -23,17 +23,17 @@ You can launch both the frontend and backend simultaneously using the provided V
 
 ### 2. Manual Setup
 **Backend:**
-\`\`\`bash
+```bash
 cd backend
 python -m venv venv
 source venv/Scripts/activate  # (Windows)
 pip install -r requirements.txt
 python manage.py runserver
-\`\`\`
+```
 
 **Frontend:**
-\`\`\`bash
+```bash
 cd frontend
 npm install
 npm run dev
-\`\`\`
+```
