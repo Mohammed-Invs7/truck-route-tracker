@@ -20,7 +20,7 @@ export default function MapComponent({ mapData }) {
     <div className="h-[400px] w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm z-0">
       <MapContainer 
         bounds={bounds} 
-        scrollWheelZoom={false} 
+        scrollWheelZoom={true} 
         style={{ height: "100%", width: "100%" }}
       >
         {/* OpenStreetMap tile layer */}
